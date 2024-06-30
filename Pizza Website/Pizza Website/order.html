@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pizza Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            text-align: center;
+        }
+
+        h1 {
+            background-color: #ff6600;
+            color: #fff;
+            padding: 10px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        input[type="button"] {
+            background-color: #ff6600;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        input[type="button"]:hover {
+            background-color: #ff3300;
+        }
+
+        #orderSummary {
+            text-align: left;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pizza Order</h1>
+    <form id="pizzaForm">
+        <label for="pizzaSize">Select Pizza Size:</label>
+        <select id="pizzaSize" name="size">
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+        </select>
+
+        <label for="toppings">Select Toppings (Check all that apply):</label><br>
+        <input type="checkbox" name="topping" value="pepperoni"> Pepperoni
+        <input type="checkbox" name="topping" value="sausage"> Sausage
+        <input type="checkbox" name="topping" value="mushrooms"> Mushrooms
+        <input type="checkbox" name="topping" value="greenpeppers"> Green Peppers
+        <input type="checkbox" name="topping" value="onions"> Onions
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="1" min="1" max="10">
+
+        <input type="button" value="Order Pizza" onclick="orderPizza()">
+    </form>
+
+    <h2>Order Summary:</h2>
+    <div id="orderSummary"></div>
+
+    <script>
+        function orderPizza() {
+            const size = document.getElementById("pizzaSize").value;
+            const toppings = Array.from(document.querySelectorAll("input[name='topping']:checked")).map(input => input.value);
+            const quantity = parseInt(document.getElementById("quantity").value);
+            const totalCost = calculateTotalCost(size, toppings, quantity);
+            const summary = `You have ordered ${quantity} ${size} pizza(s) with ${toppings.join(", ")} topping(s). Total cost: $${totalCost.toFixed(2)}`;
+            document.getElementById("orderSummary").textContent = summary;
+        }
+
+        function calculateTotalCost(size, toppings, quantity) {
+            const sizePrices = {
+                small: 8.99,
+                medium: 10.99,
+                large: 12.99
+            };
+            const toppingPrice = 1.5;
+
+            const basePrice = sizePrices[size];
+            const toppingsCost = toppings.length * toppingPrice;
+            const totalCost = (basePrice + toppingsCost) * quantity;
+
+            return totalCost;
+        }
+    </script>
+</body>
+</html>
